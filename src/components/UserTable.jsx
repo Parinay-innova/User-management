@@ -2,20 +2,26 @@
 
 import React, { useContext, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button, CircularProgress, Typography } from '@mui/material';
+import {
+  Button,
+  CircularProgress,
+  Typography,
+  Paper,
+  Container,
+  Stack
+} from '@mui/material';
+import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import AddUserForm from './AddUserForm';
 import EditUserForm from './EditUserForm';
 import { UserContext } from '../context/UserContext';
 
 const UserTable = () => {
-    const {
-      users,
-      deleteUser,
-      loading,
-      error
-    } = useContext(UserContext);
-  
-  
+  const {
+    users,
+    deleteUser,
+    loading,
+    error
+  } = useContext(UserContext);
 
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -42,12 +48,12 @@ const UserTable = () => {
       headerName: 'Actions',
       flex: 1,
       renderCell: (params) => (
-        <>
+        <Stack direction="row" spacing={1}>
           <Button
             variant="outlined"
             size="small"
+            startIcon={<EditIcon />}
             onClick={() => handleEditClick(params.row)}
-            style={{ marginRight: 8 }}
           >
             Edit
           </Button>
@@ -55,54 +61,73 @@ const UserTable = () => {
             variant="contained"
             color="error"
             size="small"
+            startIcon={<DeleteIcon />}
             onClick={() => handleDeleteUser(params.row)}
           >
             Delete
           </Button>
-        </>
+        </Stack>
       )
     }
   ];
 
   return (
-    <div style={{ height: 500, width: '100%' }}>
-      <div style={{ marginBottom: 16 }}>
-        <Button variant="contained" onClick={() => setOpenAddModal(true)}>
-          + Add User
-        </Button>
-      </div>
-
-      {/* Spinner or Error */}
-      {loading ? (
-        <div style={{ textAlign: 'center', paddingTop: 50 }}>
-          <CircularProgress />
-        </div>
-      ) : error ? (
-        <Typography color="error" sx={{ mb: 2 }}>
-          {error}
+    <Container maxWidth="md">
+      <Paper elevation={3} sx={{ p: 3, mt: 4 }}>
+        <Typography variant="h4" fontWeight="bold" gutterBottom>
+          User Management
         </Typography>
-      ) : (
-        <DataGrid
-          rows={users}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5, 10]}
+
+        <Stack direction="row" justifyContent="flex-end" mb={2}>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => setOpenAddModal(true)}
+          >
+            Add User
+          </Button>
+        </Stack>
+
+        {loading ? (
+          <Stack alignItems="center" mt={4}>
+            <CircularProgress />
+          </Stack>
+        ) : error ? (
+          <Typography color="error" sx={{ mb: 2 }}>
+            {error}
+          </Typography>
+        ) : (
+          <DataGrid
+            rows={users}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[5, 10]}
+            autoHeight
+            sx={{
+              boxShadow: 2,
+              border: 2,
+              borderColor: 'primary.light',
+              '& .MuiDataGrid-cell:hover': {
+                color: 'primary.main',
+              },
+            }}
+          />
+        )}
+
+        {/* Add User Modal */}
+        <AddUserForm
+          open={openAddModal}
+          handleClose={() => setOpenAddModal(false)}
         />
-      )}
 
-      {/* Add User Modal */}
-      <AddUserForm
-        open={openAddModal}
-        handleClose={() => setOpenAddModal(false)}
-      />
-
-      {/* Edit User Modal */}
-      <EditUserForm
-        open={openEditModal}
-        handleClose={() => setOpenEditModal(false)}
-        userData={selectedUser}
-      />
-    </div>
+        {/* Edit User Modal */}
+        <EditUserForm
+          open={openEditModal}
+          handleClose={() => setOpenEditModal(false)}
+          userData={selectedUser}
+        />
+      </Paper>
+    </Container>
   );
 };
 
