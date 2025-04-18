@@ -17,16 +17,15 @@ A fully functional user management POC built using **React**, **Material UI**, a
 ---
 
 ##  Live Demo
-
-🔗 **     **  
+ 
 ---
 
-## 🖼️ Preview
+##  Preview
 
 
 ---
 
-## 📦 Tech Stack
+##  Tech Stack
 
 - [React](https://reactjs.org/)
 - [Material UI (MUI)](https://mui.com/)
