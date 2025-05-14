@@ -24,13 +24,14 @@ A fully functional user management POC built using **React**, **Material UI**, a
 - [React Context API](https://reactjs.org/docs/context.html)
 - [Vercel](https://vercel.com/) for deployment
 
-------
- # Deployment : - https://user-management-one-lemon.vercel.app/
+---
 
-## Commands for running the app :- 
-- Clone the project and run it locally:  git clone https://github.com/Parinay-innova/User-management.git
-- cd user-management
-- npm install
-- fnm env --use-on-cd | Out-String | Invoke-Expression
-- npm start
+## ⚙️ Getting Started
 
+Clone the project and run it locally:
+
+```bash
+git clone https://github.com/Parinay-innova/User-management.git
+cd user-management
+npm install
+npm start

@@ -9,8 +9,7 @@ import {
   Stack
 } from '@mui/material';
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
-import AddUserForm from './AddUserForm';
-import EditUserForm from './EditUserForm';
+import UserFormModal from './UserFormModal';
 import { UserContext } from '../context/UserContext';
 
 const UserTable = () => {
@@ -112,17 +111,16 @@ const UserTable = () => {
           />
         )}
 
-        {/* Add User Modal */}
-        <AddUserForm
-          open={openAddModal}
-          handleClose={() => setOpenAddModal(false)}
-        />
-
-        {/* Edit User Modal */}
-        <EditUserForm
-          open={openEditModal}
-          handleClose={() => setOpenEditModal(false)}
-          userData={selectedUser}
+        {/* Unified Add/Edit User Modal */}
+        <UserFormModal
+          open={openAddModal || openEditModal}
+          handleClose={() => {
+            setOpenAddModal(false);
+            setOpenEditModal(false);
+            setSelectedUser(null);
+          }}
+          isEditMode={openEditModal}
+          existingUser={selectedUser}
         />
       </Paper>
     </Container>
@@ -130,6 +128,3 @@ const UserTable = () => {
 };
 
 export default UserTable;
-
-
-

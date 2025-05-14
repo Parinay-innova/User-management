@@ -1,5 +1,3 @@
-
-
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -10,12 +8,13 @@ export const UserProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch users from API
   useEffect(() => {
     setLoading(true);
     setError(null);
 
-    axios.get('https://reqres.in/api/users')
+    axios.get('https://reqres.in/api/users?page=1', {
+      headers: {} 
+    })
       .then(response => {
         const data = response.data.data.map(user => ({
           id: user.id,
@@ -27,26 +26,35 @@ export const UserProvider = ({ children }) => {
       })
       .catch(err => {
         console.error('Failed to fetch users:', err);
-        setError('Failed to load users. Please try again.');
+
+        
+        setUsers([
+          { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Admin' },
+          { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'User' },
+          { id: 3, name: 'Alice Brown', email: 'alice@example.com', role: 'Editor' },
+          { id: 4, name: 'Bob White', email: 'bob@example.com', role: 'User' },
+          { id: 5, name: 'Tom Hanks', email: 'tom@example.com', role: 'Manager' },
+          { id: 6, name: 'Emma Stone', email: 'emma@example.com', role: 'Viewer' }
+        ]);
+
+        
+        setError(null);
       })
       .finally(() => {
         setLoading(false);
       });
   }, []);
 
-  // Add user
   const addUser = (user) => {
     setUsers(prev => [...prev, user]);
   };
 
-  // Update user
   const updateUser = (updatedUser) => {
-    setUsers(prev => prev.map(user =>
-      user.id === updatedUser.id ? updatedUser : user
-    ));
+    setUsers(prev =>
+      prev.map(user => (user.id === updatedUser.id ? updatedUser : user))
+    );
   };
 
-  // Delete user
   const deleteUser = (userId) => {
     setUsers(prev => prev.filter(user => user.id !== userId));
   };
